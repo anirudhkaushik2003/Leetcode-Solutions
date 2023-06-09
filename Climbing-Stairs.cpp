@@ -9,7 +9,7 @@ using namespace std;
 #define pii pair<int, int>
 #define vi vector<int>
 // dp[i] = number of ways to climb to ith step
-// dp[i] = dp[i-1] + 1 + ((i>1)>1 ? dp[i-2]: 0)
+// dp[i] = dp[i-1] + ((i>1)>1 ? dp[i-2]: 0)
 class Solution
 {
 public:
