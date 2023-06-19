@@ -9,27 +9,43 @@ using namespace std;
 #define pii pair<int, int>
 #define vi vector<int>
 
+# define INF 1e9
 class Solution
 {
 public:
     int lengthOfLIS(vector<int> &nums)
     {
         int n = nums.size();
-        vi dp(n, 0);
-        dp[0] = 1;
-        int max_len = 1;
-        for (int i = 1; i < n; i++)
+        vi dp(n+1, INF);
+        dp[0] = -INF;
+
+        for(int i = 0 ; i < n; i++)
         {
-            dp[i] = 1;
-            for (int j = 0; j < i; j++)
+            int l = upper_bound(dp.begin(), dp.end(), nums[i]) - dp.begin();
+            if(dp[l-1] < nums[i] && nums[i] < dp[l])
             {
-                if (nums[j] < nums[i])
-                {
-                    dp[i] = max(dp[i], dp[j] + 1);
-                }
+                dp[l] = nums[i];
             }
-            max_len = max(max_len, dp[i]);
         }
-        return max_len;
+
+        int ans = 1;
+        for(int i = n; i>=1;i--)
+        {
+            if(dp[i] < INF)
+            {
+                ans = i;
+                break;
+            }
+        }
+
+        return ans;        
     }
 };
+
+int main()
+{
+    vi nums = {10,9,2,5,3,7,101,18};
+    Solution s;
+    auto ans = s.lengthOfLIS(nums);
+    cout << ans << endl;
+}
