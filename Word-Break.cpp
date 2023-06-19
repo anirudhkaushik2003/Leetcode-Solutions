@@ -35,50 +35,57 @@ public:
                 hashmap[key].pb(wordDict[i]);
             }
         }
-
-        for (auto it : hashmap)
-        {
-            cout << it.first << " ";
-            for (auto str : it.second)
-            {
-                cout << str << " ";
-            }
-            cout << endl;
-        }
         int m = s.size();
-        vi dp(m, -1);
-        len_sort c;
-        sort(wordDict.begin(), wordDict.end(), c);
 
-        int last_ind = 0;
-        for (int i = m-1; i >= 0; i--)
+        vector<bool> dp(m , false);
+        if (hashmap.find(1) == hashmap.end())
         {
-            int cur_len = i + 1 - last_ind;
-            // cout << m -last_ind +  dp[last_ind-1] << endl;
-            if (hashmap.find(cur_len) == hashmap.end())
-                continue;
-
-            for (auto it : hashmap[cur_len])
+        }
+        else
+        {
+            for (auto it : hashmap[1])
             {
-                cout << "length: " << cur_len << endl;
-                cout << "substring: " << s.substr(last_ind, cur_len) << " "
-                     << "iterator: " << it << " matched: " << (s.substr(last_ind, cur_len) == it) << endl;
-                if (s.substr(last_ind, cur_len) == it)
+                if (s.substr(0, 1) == it)
                 {
-                    dp[i] = cur_len;
-                    last_ind = i + 1;
+                    dp[0] = true;
+                    break;
                 }
             }
         }
-        // cout << "last_ind: " << last_ind << endl;
-        return (last_ind == m) ? true : false;
+
+        for (int i = 1; i < m; i++)
+        {
+            int len = i + 1;
+            for (int j = len; j > 0; j--)
+            {
+                if (i-j < 0 || dp[i - j ] == true)
+                {
+                    int cond = 0;
+                    if(hashmap.find(j) == hashmap.end()) continue;
+                    for (auto it : hashmap[j])
+                    {
+                        // cout << it << endl;
+                        if (s.substr(i - j + 1, j) == it)
+                        {
+                            // cout << s.substr(i - j + 1, j) << " " << it << endl;
+                            cond = 1;
+                            dp[i] = true;
+                            break;
+                        }
+                    }
+                    if (cond == 1)
+                        break;
+                }
+            }
+        }
+        return dp[m - 1];
     }
 };
 
 int main()
 {
-    string s = "aaaaaaa";
-    vector<string> wordDict = {"aaaa", "aaa"};
+    string s = "catsanddogs";
+    vector<string> wordDict = {"cats","dog","sand","and","cat"};
 
     Solution S;
     cout << S.wordBreak(s, wordDict) << endl;
