@@ -36,7 +36,7 @@ public:
     int longestSubsequence(vector<int> &arr, int difference)
     {
         int n = arr.size();
-        map<int, priority_queue<int, vector<int>, greater<int>>> m;
+        map<int, vector<int>> m;
         vi dp(n, 1);
         vector<bool> visited(n, false);
 
@@ -44,16 +44,16 @@ public:
         {
             if (m.find(arr[i]) == m.end())
             {
-                m[arr[i]] = priority_queue<int, vector<int>, greater<int>>();
-                m[arr[i]].push(i);
+                m[arr[i]] = vi();
+                m[arr[i]].push_back(i);
             }
             else
             {
-                m[arr[i]].push(i);
+                m[arr[i]].push_back(i);
             }
         }
         int cur_max = 0;
-        int cur, req, ind;
+        int cur, req, ind, cond, j;
 
         for (int i = 0; i < n; i++)
         {
@@ -65,20 +65,24 @@ public:
                 req = arr[i] + difference;
                 ind = i;
                 // it = binarySearch(sorted, 0, n - 1, req);
-                priority_queue<int, vector<int>, greater<int>> pq = m[req];
-                while (m.find(req) != m.end())
+                while (m.find(req) != m.end() )
                 {
-                    pq = m[req];
+                    sort(m[req].begin(), m[req].end());
                     cur = req;
-                    while (!pq.empty() && pq.top() <= ind)
+                    cond = 0;
+                    for(auto it: m[req])
                     {
-                        pq.pop();
+                        if(it > ind)
+                        {
+                            ind = it;
+                            cond = 1;
+                            break;
+                        }
                     }
-                    if (pq.empty())
+                    if(cond == 0)
                     {
                         break;
                     }
-                    ind = pq.top();
                     // cout << cur << " ";
                     // ind = sorted[it].second;
                     visited[ind] = true;
