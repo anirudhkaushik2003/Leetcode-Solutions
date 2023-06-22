@@ -8,6 +8,13 @@ using namespace std;
 #define pll pair<ll, ll>
 #define pii pair<int, int>
 #define vi vector<int>
+static auto _ = []()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return nullptr;
+}();
 
 class Solution
 {
@@ -17,6 +24,8 @@ public:
         
     }
 };
+
+
 
 int main()
 {
