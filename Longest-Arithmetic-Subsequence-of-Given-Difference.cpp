@@ -52,6 +52,11 @@ public:
                 m[arr[i]].push_back(i);
             }
         }
+
+        for(auto it :m)
+        {
+            sort(m[it.first].begin(), m[it.first].end());
+        }
         int cur_max = 0;
         int cur, req, ind, cond, j;
 
@@ -67,7 +72,6 @@ public:
                 // it = binarySearch(sorted, 0, n - 1, req);
                 while (m.find(req) != m.end() )
                 {
-                    sort(m[req].begin(), m[req].end());
                     cur = req;
                     cond = 0;
                     for(auto it: m[req])
