@@ -33,15 +33,8 @@ public:
             swap(text1, text2);
         }
 
-        vector<vi> dp(m + 1, vi(n + 1));
-        for (int i = 0; i <= n; i++)
-        {
-            dp[0][i] = 0;
-        }
-        for (int j = 0; j <= m; j++)
-        {
-            dp[j][0] = 0;
-        }
+        vi prev(n + 1, 0);
+        vi cur(n+1, 0);
 
         for (int i = 1; i <= m; i++)
         {
@@ -49,14 +42,15 @@ public:
             {
                 if (text1[j] == text2[i])
                 {
-                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                    cur[j] = prev[j-1] + 1;
                 }
                 else
                 {
-                    dp[i][j] = max(dp[i - 1][j - 1], max(dp[i][j - 1], dp[i - 1][j]));
+                    cur[j] = max(prev[j - 1], max(cur[j - 1], prev[j]));
                 }
             }
+            prev = cur;
         }
-        return dp[m][n];
+        return cur[n];
     }
 };
