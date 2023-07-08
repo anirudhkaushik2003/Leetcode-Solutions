@@ -19,25 +19,6 @@ static auto _ = []()
 class Solution
 {
 public:
-    int combinationSum4sub(vector<int> &nums, int target, vi &dp)
-    {
-        if (dp[target] != 0)
-        {
-            return dp[target];
-        }
-        if (target == 0)
-        {
-            return 1;
-        }
-
-        for (auto num : nums)
-        {
-            if (num > target)
-                break;
-            dp[target] += combinationSum4sub(nums, target - num, dp);
-        }
-        return dp[target];
-    }
     int combinationSum4(vector<int> &nums, int target)
     {
         sort(nums.begin(), nums.end());
@@ -45,7 +26,18 @@ public:
         vi dp(target + 1, 0);
         dp[0] = 1;
 
-        return combinationSum4sub(nums, target, dp);
+        for (int i = 1; i <= target; i++)
+        {
+            for (auto num : nums)
+            {
+                if (num > i)
+                    break;
+
+                dp[i] += dp[i - num];
+            }
+        }
+
+        return dp[target];
     }
 };
 
