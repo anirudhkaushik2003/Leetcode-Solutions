@@ -8,22 +8,33 @@ using namespace std;
 #define pll pair<ll, ll>
 #define pii pair<int, int>
 #define vi vector<int>
-
+static auto _ = []()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return nullptr;
+}();
 class Solution
 {
 public:
     long long mostPoints(vector<vector<int>> &questions)
     {
         int n = questions.size();
-        vi dp(n, 0);
-        int cur_max = 0;
-
-        for (int i = n - 1; i > -1; i--)
+        vll dp(n, 0);
+        dp[n - 1] = questions[n - 1][0];
+        ll cur_max = dp[n - 1];
+        for (int i = n - 2; i > -1; i--)
         {
-            if (i + questions[i][1] + 1 < n)
-                dp[i] = questions[i][0] + dp[i + questions[i][1] + 1];
+            if (i + 1 + questions[i][1] < n)
+            {
+
+                dp[i] = max(cur_max, questions[i][0] + dp[i + 1 + questions[i][1]]);
+            }
             else
-                dp[i] = questions[i][0];
+            {
+                dp[i] = max(cur_max, (ll)questions[i][0]);
+            }
             cur_max = max(cur_max, dp[i]);
         }
         return cur_max;
