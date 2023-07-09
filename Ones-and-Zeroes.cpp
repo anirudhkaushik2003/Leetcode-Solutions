@@ -19,14 +19,9 @@ public:
         int cur_max = 0;
         for (int i = 0; i < s; i++)
         {
-            int ones = 0, zeroes = 0;
-            for (auto ch : strs[i])
-            {
-                if (ch == '1')
-                    ones++;
-                else
-                    zeroes++;
-            }
+            int ones = count(strs[i].begin(), strs[i].end(), '1');
+            int zeroes = strs[i].size() - ones;
+
             for (int j = m; j >= zeroes; j--)
             {
                 for (int k = n; k >= ones; k--)
